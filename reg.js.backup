@@ -1,0 +1,27 @@
+#!/usr/bin/env node
+var phantom = require('phantom');
+phantom.create({
+	parameters: {
+		// proxy: '127.0.0.1:9150',
+		proxy: '192.168.0.1:8080',
+		// 'proxy-type': 'socks5',
+		// 'remote-debugger-port': 9000,
+		// 'remote-debugger-autorun': 'yes',
+		// 'web-security': false,
+		'disk-cache': false,
+	}
+}, function(browser){
+	console.log('browser ', browser);
+	browser.createPage(function(page){
+		// page.set('settings.userAgent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.6 Safari/537.11');
+		page.open("http://www.piliapp.com/what-is-my/http-request-headers", function (status) {
+			console.log("https://check.torproject.org/? ", status);
+			page.evaluate(function () {
+				return document.body.innerHTML;
+			}, function (result) {
+				console.log('Page title is ' + result);
+				// browser.exit();
+			});
+		});
+	});
+});
